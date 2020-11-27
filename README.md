@@ -1,0 +1,1 @@
+I've dabbled in Python a bit in the past, messing with Tk and some simple tasks. However, I wasn't happy with the language, so I moved over to Perl, where I have spent a good year or two of my time. I think it might be interesting to have a look at Python again, now that I've gradually eased myself into object-orieted programming.
