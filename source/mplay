@@ -3,11 +3,15 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/mplay
 # Started On        - Fri 27 Nov 15:32:15 GMT 2020
-# Last Change       - Sat 28 Nov 01:24:56 GMT 2020
+# Last Change       - Sat 28 Nov 02:04:28 GMT 2020
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
 # Rewrite of Shell-written `mplay` wrapper for MOC, in Python.
+#
+# Dependencies:
+#
+#   python3.6 (>= 3.6.9)
 #------------------------------------------------------------------------------
 
 from os import path, getenv, listdir, system

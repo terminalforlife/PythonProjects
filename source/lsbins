@@ -1,0 +1,128 @@
+#!/usr/bin/env python3.6
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/lsbins
+# Started On        - Sat 28 Nov 02:02:41 GMT 2020
+# Last Change       - Sat 28 Nov 03:43:53 GMT 2020
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Features:
+#
+# N/A
+#
+# Bugs:
+#
+#TODO: DoMatch() isn't working, for some reason.
+#
+# A Python 3.6 re-write of Perl-written LSBins, originally written in Shell.
+#
+# Extened Regular Expressions are always enabled in this Python re-write.
+#
+# Dependencies:
+#
+#   man-db (>= 2.8.3-2)
+#   python3.6 (>= 3.6.9)
+#------------------------------------------------------------------------------
+
+from os import getenv, path, listdir, system, access, R_OK, X_OK, popen
+from re import match, IGNORECASE, sub
+from sys import argv, stderr
+
+CurVer = '2020-11-28'
+Progrm = 'lsbins'
+
+def Usage():
+	print(f'''Usage: {Progrm} [OPTS] [MATCH]
+
+		  -h, --help               - Display this help information.
+		  -v, --version            - Output the version datestamp.
+		  -N, --nodescribe         - Omit the short description.
+		  -a, --show-all           - Show alternative descriptions.
+		  -i, --ignore-case        - Search case-insensitively.\
+	'''.replace('\t', ''))
+
+def Err(Exit, String):
+	stderr.write(f'ERROR: {String}')
+	if Exit > 0: exit(Exit)
+
+NoDescribe = 'False'
+CaseInsen = 'False'
+ExtReg = 'False'
+ShowAll = 'False'
+
+while len(argv) > 1:
+	if match('^(--help|-h)$', argv[1]):
+		Usage(); exit(0)
+	elif match('^(--version|-v)$', argv[1]):
+		print(CurVer); exit(0)
+	elif match('^(--ignore-case|-i)$', argv[1]):
+		CaseInsen = 'True'
+	elif match('^(--nodescribe|-N)$', argv[1]):
+		NoDescribe = 'True'
+	elif match('^(--show-all|-a)$', argv[1]):
+		ShowAll = 'True'
+	elif match('^-', argv[1]):
+		Err(1, 'Unrecognised option(s) specified.')
+	else:
+		break
+
+	argv.pop(0)
+
+if len(argv) > 2: Err(1, 'Only one MATCH is allowed.')
+
+if not len(argv) == 1:
+	if ExtReg is 'True':
+		Err(1, "Option '--extended-regexp|-E' provided, but missing MATCH.")
+	elif CaseInsen is 'True':
+		Err(1, "Option '--ignore-case|-i' provided, but missing MATCH.")
+
+ExeDict = {}
+ExeArray = []
+for Dir in getenv('PATH').split(':'):
+	if not path.isdir(Dir): next
+
+	for File in listdir(Dir):
+		if not path.isfile(File): next
+		if not access(File, R_OK): next
+		if not access(File, X_OK): next
+
+		# Avoid duplicated results.
+		if File not in ExeDict:
+			ExeArray += [File]
+			ExeDict[File] = 1
+
+
+def DoMatch(Name):
+	if len(argv) == 1: return(0)
+
+	# Check for MATCH if it's provided.
+	if CaseInsen is 'True':
+		if match(argv[1], Name, IGNORECASE): return(0)
+	else:
+		if match(argv[1], Name): return(0)
+
+	return(1)
+
+if NoDescribe is not 'True' and 'man' in ExeArray:
+	Data = popen(f'man -f {" ".join(ExeArray)} 2> /dev/null').read()
+
+	OldName = ''
+	for Line in Data.splitlines():
+		Name = Line.split(' ')[0]
+
+		# Using `OldName` to avoid alternative descriptions.
+		if Name is OldName and ShowAll is not 'True': next
+
+		# Can't get back-referencing to work how it usually would. So, unlike
+		# the Perl version of LSBins, the first character won't be capitalized.
+		Desc = sub('^.* - ', '', Line)
+
+		DoMatch(Name) or next
+		print(f"{Name} - {Desc}")
+
+		OldName = Name
+else:
+	for File in sorted(ExeArray):
+		if DoMatch(File): next
+		print(File)
