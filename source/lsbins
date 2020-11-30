@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/lsbins
 # Started On        - Sat 28 Nov 02:02:41 GMT 2020
-# Last Change       - Mon 30 Nov 04:41:55 GMT 2020
+# Last Change       - Mon 30 Nov 04:44:29 GMT 2020
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -51,7 +51,6 @@ def Err(Exit, String):
 
 NoDescribe = False
 CaseInsen = False
-ExtReg = False
 ShowAll = False
 
 while len(argv) > 1:
@@ -74,11 +73,8 @@ while len(argv) > 1:
 
 if len(argv) > 2: Err(1, 'Only one MATCH is allowed.')
 
-if not len(argv) == 1:
-	if ExtReg is True:
-		Err(1, "Option '--extended-regexp|-E' provided, but missing MATCH.")
-	elif CaseInsen is True:
-		Err(1, "Option '--ignore-case|-i' provided, but missing MATCH.")
+if not len(argv) == 1 and CaseInsen is True:
+	Err(1, "Option '--ignore-case|-i' provided, but missing MATCH.")
 
 Executables = set()
 for Dir in getenv('PATH').split(':'):
