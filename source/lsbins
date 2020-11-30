@@ -3,24 +3,24 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/lsbins
 # Started On        - Sat 28 Nov 02:02:41 GMT 2020
-# Last Change       - Mon 30 Nov 04:44:29 GMT 2020
+# Last Change       - Mon 30 Nov 05:07:43 GMT 2020
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
-# Features:
-#
-# N/A
-#
-# Bugs:
-#
-# N/A
-#
 # A Python 3.6 re-write of Perl-written LSBins, originally written in Shell.
 #
 # Extended Regular Expressions are always enabled in this Python re-write.
 #
 # Thanks go to 'aloussase' via #1 in 'PythonProjects' for helping me to figure
 # some stuff out.
+#
+# Features:
+#
+#TODO: Enable ERE, per the Perl version of LSBins.
+#
+# Bugs:
+#
+#TODO: Name VS OldName in final loop, when describing, isn't working at all.
 #
 # Dependencies:
 #
@@ -41,7 +41,6 @@ def Usage():
 		  -h, --help               - Display this help information.
 		  -v, --version            - Output the version datestamp.
 		  -N, --nodescribe         - Omit the short description.
-		  -a, --show-all           - Show alternative descriptions.
 		  -i, --ignore-case        - Search case-insensitively.\
 	'''.replace('\t', ''))
 
@@ -51,7 +50,6 @@ def Err(Exit, String):
 
 NoDescribe = False
 CaseInsen = False
-ShowAll = False
 
 while len(argv) > 1:
 	if match('^(--help|-h)$', argv[1]):
@@ -62,8 +60,6 @@ while len(argv) > 1:
 		CaseInsen = True
 	elif match('^(--nodescribe|-N)$', argv[1]):
 		NoDescribe = True
-	elif match('^(--show-all|-a)$', argv[1]):
-		ShowAll = True
 	elif match('^-', argv[1]):
 		Err(1, 'Unrecognised option(s) specified.')
 	else:
@@ -73,7 +69,7 @@ while len(argv) > 1:
 
 if len(argv) > 2: Err(1, 'Only one MATCH is allowed.')
 
-if not len(argv) == 1 and CaseInsen is True:
+if len(argv) == 1 and CaseInsen is True:
 	Err(1, "Option '--ignore-case|-i' provided, but missing MATCH.")
 
 Executables = set()
@@ -104,10 +100,10 @@ if NoDescribe is not True and 'man' in Executables:
 
 	OldName = ''
 	for Line in Data.splitlines():
-		Name = Line.split(' ')[0]
+		Name = Line.split()[0]
 
 		# Using `OldName` to avoid alternative descriptions.
-		if Name is OldName and ShowAll is not True: next
+		if Name.lower() is OldName.lower(): next
 
 		# Can't get back-referencing to work how it usually would. So, unlike
 		# the Perl version of LSBins, the first character won't be capitalized.
