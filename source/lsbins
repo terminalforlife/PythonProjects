@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/lsbins
 # Started On        - Sat 28 Nov 02:02:41 GMT 2020
-# Last Change       - Sat 28 Nov 03:43:53 GMT 2020
+# Last Change       - Sun 29 Nov 05:26:08 GMT 2020
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -43,13 +43,13 @@ def Usage():
 	'''.replace('\t', ''))
 
 def Err(Exit, String):
-	stderr.write(f'ERROR: {String}')
+	print(f'ERROR: {String}', file=stderr)
 	if Exit > 0: exit(Exit)
 
-NoDescribe = 'False'
-CaseInsen = 'False'
-ExtReg = 'False'
-ShowAll = 'False'
+NoDescribe = False
+CaseInsen = False
+ExtReg = False
+ShowAll = False
 
 while len(argv) > 1:
 	if match('^(--help|-h)$', argv[1]):
@@ -57,11 +57,11 @@ while len(argv) > 1:
 	elif match('^(--version|-v)$', argv[1]):
 		print(CurVer); exit(0)
 	elif match('^(--ignore-case|-i)$', argv[1]):
-		CaseInsen = 'True'
+		CaseInsen = True
 	elif match('^(--nodescribe|-N)$', argv[1]):
-		NoDescribe = 'True'
+		NoDescribe = True
 	elif match('^(--show-all|-a)$', argv[1]):
-		ShowAll = 'True'
+		ShowAll = True
 	elif match('^-', argv[1]):
 		Err(1, 'Unrecognised option(s) specified.')
 	else:
@@ -72,13 +72,12 @@ while len(argv) > 1:
 if len(argv) > 2: Err(1, 'Only one MATCH is allowed.')
 
 if not len(argv) == 1:
-	if ExtReg is 'True':
+	if ExtReg is True:
 		Err(1, "Option '--extended-regexp|-E' provided, but missing MATCH.")
-	elif CaseInsen is 'True':
+	elif CaseInsen is True:
 		Err(1, "Option '--ignore-case|-i' provided, but missing MATCH.")
 
-ExeDict = {}
-ExeArray = []
+Executables = set()
 for Dir in getenv('PATH').split(':'):
 	if not path.isdir(Dir): next
 
@@ -87,32 +86,28 @@ for Dir in getenv('PATH').split(':'):
 		if not access(File, R_OK): next
 		if not access(File, X_OK): next
 
-		# Avoid duplicated results.
-		if File not in ExeDict:
-			ExeArray += [File]
-			ExeDict[File] = 1
+		Executables.add(File)
 
-
-def DoMatch(Name):
+def DoMatch(FileName):
 	if len(argv) == 1: return(0)
 
 	# Check for MATCH if it's provided.
-	if CaseInsen is 'True':
+	if CaseInsen is True:
 		if match(argv[1], Name, IGNORECASE): return(0)
 	else:
 		if match(argv[1], Name): return(0)
 
 	return(1)
 
-if NoDescribe is not 'True' and 'man' in ExeArray:
-	Data = popen(f'man -f {" ".join(ExeArray)} 2> /dev/null').read()
+if NoDescribe is not True and 'man' in Executables:
+	Data = popen(f'man -f {" ".join(Executables)} 2> /dev/null').read()
 
 	OldName = ''
 	for Line in Data.splitlines():
 		Name = Line.split(' ')[0]
 
 		# Using `OldName` to avoid alternative descriptions.
-		if Name is OldName and ShowAll is not 'True': next
+		if Name is OldName and ShowAll is not True: next
 
 		# Can't get back-referencing to work how it usually would. So, unlike
 		# the Perl version of LSBins, the first character won't be capitalized.
@@ -123,6 +118,6 @@ if NoDescribe is not 'True' and 'man' in ExeArray:
 
 		OldName = Name
 else:
-	for File in sorted(ExeArray):
+	for File in sorted(Executables):
 		if DoMatch(File): next
 		print(File)
