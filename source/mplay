@@ -7,7 +7,11 @@
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
-# Rewrite of Shell-written `mplay` wrapper for MOC, in Python.
+# Rewrite of Shell-written `mplay` wrapper for MOC, in Python. This is just for
+# educational reasons, and isn't something I'm especially focused on. If you're
+# interested in this wrapper, I recommend opting for the BASH version over in
+# the Extra repository.
+#
 #
 # Dependencies:
 #
