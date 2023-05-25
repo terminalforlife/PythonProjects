@@ -1,13 +1,11 @@
-**MASTER** - _Hopefully-Stable Branch._\
-**DEV** - _Development Branch (Latest Changes)_\
+### Description
 
-# Introduction to PythonProjects
+Admittedly, I'm not a huge fan of Python. I much prefer Perl. Perl seems to do many things better, either by being more concise or by just being intelligent, such as Perl's _sane_ string concatenation operator not being the same as a bloody standard _arithmetic operator_! In Python, the lack of standard features -- those you'd expect from just about _any_ programming language -- is also quite frustrating.
 
-I've dabbled in Python a bit in the past, messing with Tk and some simple tasks. However, I wasn't happy with the language, so I moved over to Perl, where I have spent a good year or two of my time, hence the PerlProjects repository. I'm finding it interesting looking at Python again, now that I've gradually eased myself into object-oriented programming.
+However, I am starting to appreciate Python. It certainly seems to excel in some areas. The large Python community is a bonus, and there are _loads_ of modules to use to get things done. The syntax in Python is consistent and focus on formatting helps encourage tidier code.
 
-In my re-entry to and better-attempt at Python, I'll be focusing on at *least* version 3.6, in keeping with modern Python practices.
+I have no idea what I'll wind up doing with Python, if anything, but I will share the occasional Python script in this repository, and maybe one day I'll get to the point at which I'll be writing programs in Python. Until then, perhaps you'll find these scripts useful or at least educational.
 
-# Projects for Public Consumption
+### Contributions
 
-* [lsbins](source/lsbins) - A Python3.6 re-write of Perl LSBins found in PerlProjects.
-* [mplay](source/mplay) - A Python3.6 re-write of Shell MPlay found in Extra.
+I'm not looking for PRs in this repository. However, if you're interested in giving me some Python pointers, please post them in the Discussions tab, or, if there's a glaring issue in one of my Python scripts, post an Issue in reference to it.
