@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/keyvalstr.py
 # Started On        - Wed 24 May 20:55:59 BST 2023
-# Last Change       - Fri 26 May 16:25:39 BST 2023
+# Last Change       - Fri 26 May 16:28:01 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -12,9 +12,7 @@
 #
 # Using Python features, I'd probably write:
 #
-#   key, value = (string.split('='))
-#
-# Although that's not as robust. The below allows for '=' in the value.
+#   key, value = (string.split('=', 1))
 #------------------------------------------------------------------------------
 
 string = 'key=value'
