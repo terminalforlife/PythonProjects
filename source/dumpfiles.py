@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/dumpfiles.py
 # Started On        - Sat  3 Jun 22:37:20 BST 2023
-# Last Change       - Sat  3 Jun 23:41:30 BST 2023
+# Last Change       - Thu  8 Jun 16:09:05 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ def Recurse(Dir) -> str:
 	for File in os.listdir(Dir):
 		File = f"{Dir}/{File}"
 
-		if File is '.' or File is '..': continue
+		if File == '.' or File == '..': continue
 		if os.path.islink(File): continue
 		if os.path.ismount(File): continue
 
