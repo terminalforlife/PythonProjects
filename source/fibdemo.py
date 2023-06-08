@@ -3,13 +3,14 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/fibdemo.py
 # Started On        - Sun  4 Jun 01:33:53 BST 2023
-# Last Change       - Sun  4 Jun 02:01:21 BST 2023
+# Last Change       - Thu  8 Jun 16:13:07 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
 # A demonstration of the obligatory Fibonacci Sequence recursive function. This
 # file includes both the simple version and the more advanced version. Python
-# refuses to recurse beyond the 999th time.
+# 3.6 refuses to recurse beyond the 999th time, while Python 3.9 won't go past
+# 995! Argh!
 #
 # This was so much easier than in BASH!
 #
@@ -43,11 +44,11 @@ def Fib(Nr) -> int:
 
 	return(Result)
 
-print('Using advanced method for #999:\n')
+print('Using advanced method for #995:\n')
 
 SecsBefore = int(time.time())
 
-print(Fib(999))
+print(Fib(995))
 
 SecsAfter = int(time.time())
 print('\nTook {} second(s).\n'.format(SecsAfter - SecsBefore))
