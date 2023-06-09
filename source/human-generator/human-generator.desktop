@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Human Generator
+Comment=Convert bytes to IEC/SI human-readable sizes
+Keywords=bytes;size;convert;
+Exec=human-generator
+Icon=
+Terminal=false
+Type=Application
+Categories=GTK;Utility
