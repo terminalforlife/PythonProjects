@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/Users.py
 # Started On        - Fri  9 Jun 18:59:56 BST 2023
-# Last Change       - Fri  9 Jun 21:45:42 BST 2023
+# Last Change       - Fri  9 Jun 23:40:41 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -45,16 +45,15 @@ class Get():
 			for Line in FH.readlines():
 				Line = Line.rstrip().split(':')
 
-				Pos = 0
-				Name = ''
-				for Field in Line:
-					if Pos == 0:
+				First = True
+				for Field, FieldName in zip(Line, Self.FieldNames):
+					if First:
 						Name = Field
 						Self.Data[Name] = {}
-					else:
-						Self.Data[Name][Self.FieldNames[Pos]] = Field
 
-					Pos += 1
+						First = False
+					else:
+						Self.Data[Name][FieldName] = Field
 
 	# Return a given `Field` for the given `User`. If no `Field` is provided, -
 	# the given `User`'s `UserID` is returned.
