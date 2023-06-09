@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/dumpfiles.py
 # Started On        - Sat  3 Jun 22:37:20 BST 2023
-# Last Change       - Thu  8 Jun 16:09:05 BST 2023
+# Last Change       - Fri  9 Jun 23:29:59 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -20,13 +20,13 @@ import os
 import sys
 import stat
 
-def Stat(File) -> str:
+def Stat(File: str) -> str:
 	Mode, _, _, _, UID, GID = os.stat(File)[0:6]
 	Mode = oct(stat.S_IMODE(Mode))[2:]
 
 	return(f"{Mode} {UID} {GID} {File}")
 
-def Recurse(Dir) -> str:
+def Recurse(Dir: str):
 	for File in os.listdir(Dir):
 		File = f"{Dir}/{File}"
 
