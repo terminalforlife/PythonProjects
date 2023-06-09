@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/kernel-version.py
 # Started On        - Thu  8 Jun 01:33:42 BST 2023
-# Last Change       - Thu  8 Jun 01:40:14 BST 2023
+# Last Change       - Fri  9 Jun 23:31:50 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -15,7 +15,6 @@ import sys
 File = '/proc/version'
 
 try:
-	Version = ''
 	with open(File, 'rt') as FH:
 		for Line in FH.readlines():
 			LinuxFound = False
