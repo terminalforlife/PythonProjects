@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/total-ram.py
 # Started On        - Wed  7 Jun 00:11:39 BST 2023
-# Last Change       - Wed  7 Jun 22:22:19 BST 2023
+# Last Change       - Fri  9 Jun 23:57:18 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -32,11 +32,10 @@ try:
 	Digits = ''
 	with open(File, 'rt') as FH:
 		for Line in FH:
-			Line = Line.rstrip()
-			Split = Line.split(':')
+			Field1, Field2 = Line.rstrip().split(':')[0:2]
 
-			if Split[0] == 'MemTotal':
-				for Char in Split[1]:
+			if Field1 == 'MemTotal':
+				for Char in Field2:
 					if Char.isdigit():
 						Digits += Char
 
