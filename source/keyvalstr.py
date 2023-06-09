@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/keyvalstr.py
 # Started On        - Wed 24 May 20:55:59 BST 2023
-# Last Change       - Fri  9 Jun 23:27:01 BST 2023
+# Last Change       - Fri  9 Jun 23:57:59 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -14,7 +14,7 @@
 def CharIter(String: str) -> tuple:
 	SepFound = False
 	Buffer, Char, Value = '', '', ''
-	for _, Char in enumerate(String):
+	for Char in String:
 		if SepFound == True:
 			Value = f"{Value}{Char}"
 		elif Char == '=':

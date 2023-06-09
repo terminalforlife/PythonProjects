@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/puke.py
 # Started On        - Tue  6 Jun 23:36:54 BST 2023
-# Last Change       - Tue  6 Jun 23:44:23 BST 2023
+# Last Change       - Fri  9 Jun 23:58:25 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ try:
 		for Line in FH:
 			Line = Line.rstrip()
 
-			for _, Char in enumerate(Line):
+			for Char in Line:
 				RandColorIndex = random.randint(0, len(Colors) - 1)
 				RandStyleIndex = random.randint(0, len(Styles) - 1)
 				RandColor = Colors[RandColorIndex]
