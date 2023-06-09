@@ -3,33 +3,32 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/keyvalstr.py
 # Started On        - Wed 24 May 20:55:59 BST 2023
-# Last Change       - Fri 26 May 16:28:01 BST 2023
+# Last Change       - Fri  9 Jun 23:27:01 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
 # Iterate over a key=value string character-by-character to fetch both the key
-# and the value, separately. I'm really hating 'camelCase', but, when in Rome.
-#
-# Using Python features, I'd probably write:
-#
-#   key, value = (string.split('=', 1))
+# and the value, separately. Also included a more 'pythonic' approach.
 #------------------------------------------------------------------------------
 
-string = 'key=value'
+def CharIter(String: str) -> tuple:
+	SepFound = False
+	Buffer, Char, Value = '', '', ''
+	for _, Char in enumerate(String):
+		if SepFound == True:
+			Value = f"{Value}{Char}"
+		elif Char == '=':
+			SepFound = True
 
-out = ''
-gotSep = False
-key, value = '', ''
-for index in range(0, len(string)):
-	char = string[index]
-	if gotSep == True:
-		value = value + char
-	elif char == '=':
-		gotSep = True
+			Key = Buffer
+		else:
+			Buffer = f"{Buffer}{Char}"
 
-		key = out
-	else:
-		out = out + char
+	return((Key, Value))
 
-print(key)
-print(value)
+Key, Value = CharIter('Foo=Bar')
+print(f"The value for '{Key}' is '{Value}'.")
+
+# To satisfy my need for better code.
+Key, Value = 'Foo=Bar'.split('=', 1)
+print(f"The value for '{Key}' is '{Value}'.")
