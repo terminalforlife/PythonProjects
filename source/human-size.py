@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/human-size.py
 # Started On        - Tue  6 Jun 23:48:10 BST 2023
-# Last Change       - Fri  9 Jun 23:49:47 BST 2023
+# Last Change       - Sat 10 Jun 01:23:14 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -19,10 +19,8 @@ def Human(Bytes: int) -> str:
 	for Unit in 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y':
 		Bytes /= Power
 		if Bytes < Power:
-			Out = f"{Bytes:0.1f}"
-			if Out[-2:] == '.0':
-				Out = Out[0:-2]
+			Out = f"{Bytes:0.1f}".rstrip('.0')
 
 			return(f"{Out}{Unit}")
 
-print(Human(123234234))
+print(Human(10521323234))
