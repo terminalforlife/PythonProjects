@@ -1,9 +1,9 @@
 #!/usr/bin/env python3.6
 #cito M:755 O:0 G:0 T:/usr/local/bin/inout
 #------------------------------------------------------------------------------
-# Project Name      - PythonProjects/source/inout.py
+# Project Name      - PythonProjects/source/miscellaneous/inout.py
 # Started On        - Mon  5 Jun 13:12:57 BST 2023
-# Last Change       - Mon  5 Jun 14:42:21 BST 2023
+# Last Change       - Mon 19 Jun 23:34:57 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
