@@ -3,12 +3,21 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/apt-newcache
 # Started On        - Mon 19 Jun 22:18:00 BST 2023
-# Last Change       - Mon 19 Jun 23:00:17 BST 2023
+# Last Change       - Mon 19 Jun 23:14:54 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
 # Simply allow APT to completely rebuild the package cache by clearing out
 # relevant files in the '/var/lib/apt/lists' directory, but easily and tidily.
+#
+# EXIT:
+#
+#   1 - Regular error (e.g., permission denied)
+#   2 - No files are directories suitable for deletion
+#   3 - Directory '/var/lib/apt/lists' not found
+#
+# WARNING: If you have anything stored here for some reason, it will go
+#          bye-bye. The only thing which will be held back, is the 'lock' file.
 #------------------------------------------------------------------------------
 
 import os
@@ -22,17 +31,26 @@ if len(sys.argv) > 1:
 	exit(1)
 
 try:
-	for Base in os.listdir(Path):
+	Bases = os.listdir(Path)
+
+	Found = 0
+	for Base in Bases:
 		File = os.path.join(Path, Base)
 
 		if os.path.isfile(File):
 			if Base != 'lock':
 				os.remove(File)
+				Found += 1
 		elif os.path.isdir(File):
 			shutil.rmtree(File)
+			Found += 1
+
+	if Found == 0:
+		print(f"Err: Nothing to delete.", file = sys.stderr)
+		exit(2)
 except FileNotFoundError:
 	print(f"Err: Directory '{Path}' not found.", file = sys.stderr)
-	exit(1)
+	exit(3)
 except PermissionError:
 	print("Err: Permission denied -- are you 'root'?", file = sys.stderr)
 	exit(1)
