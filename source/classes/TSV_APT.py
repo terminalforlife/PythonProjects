@@ -1,13 +1,37 @@
 #!/usr/bin/env python3.6
 
 #------------------------------------------------------------------------------
-# Project Name      - PythonProjects/source/miscellaneous/apt-tsv
+# Project Name      - PythonProjects/source/classes/TSV_APT.py
 # Started On        - Tue 20 Jun 01:20:22 BST 2023
-# Last Change       - Tue 20 Jun 02:44:51 BST 2023
+# Last Change       - Tue 20 Jun 17:53:36 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
 # Send TSV data of installed packages to STDOUT.
+#
+# Example:
+#
+#   Data = StatusFile()
+#
+#   print(Data.Header())
+#   for Package in Data.Packages:
+#   	Out = Package
+#   	for Key in Data.Get(Package):
+#   		Out = f'{Out}\t{Data.Get(Package, Key)}'
+#
+#   	print(Out)
+#
+# Features:
+#
+# N/A
+#
+# Bugs:
+#
+# N/A
+#
+# Dependencies:
+#
+#   python (>= 3.6)
 #------------------------------------------------------------------------------
 
 import sys
@@ -88,13 +112,3 @@ class StatusFile:
 			Out = f'{Out}\t{Key.upper()}'
 
 		return(Out)
-
-Data = StatusFile()
-
-print(Data.Header())
-for Package in Data.Packages:
-	Out = Package
-	for Key in Data.Get(Package):
-		Out = f'{Out}\t{Data.Get(Package, Key)}'
-
-	print(Out)

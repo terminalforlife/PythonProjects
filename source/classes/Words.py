@@ -1,9 +1,9 @@
 #!/usr/bin/env python3.6
 
 #------------------------------------------------------------------------------
-# Project Name      - PythonProjects/source/miscellaneous/Words.py
+# Project Name      - PythonProjects/source/classes/Words.py
 # Started On        - Thu 25 May 12:51:27 BST 2023
-# Last Change       - Mon 19 Jun 23:34:57 BST 2023
+# Last Change       - Tue 20 Jun 17:48:52 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -58,21 +58,3 @@ class Words():
 				Found.append(Word)
 
 		return(Found)
-
-WordList = Words()
-
-Words = WordList.Match(r'^baz')
-Length = len(Words)
-
-if Length:
-	print(f"REGEX '\033[93m^baz\033[0m' matched {Length} word(s):\n")
-
-	for Index, Word in enumerate(Words):
-		print(f"  \033[96m{Index + 1}\033[0m. '\033[92m{Word}\033[0m'")
-
-	print()
-
-print(f"Picked '\033[92m{WordList.Rand()}\033[0m' from \033[92m{WordList.Count():,}\033[0m word(s).")
-
-if WordList.Find('duh'):
-	print("Word '\033[92mduh\033[0m' was also found among them.")

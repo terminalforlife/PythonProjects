@@ -1,0 +1,105 @@
+#!/usr/bin/env python3.6
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/smshare
+# Started On        - Tue 20 Jun 13:52:15 BST 2023
+# Last Change       - Tue 20 Jun 17:54:40 BST 2023
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Gather primary markshare statistic for Steam, for Linux, OSX, and Windows.
+#------------------------------------------------------------------------------
+
+import requests
+import sys
+import re
+
+def ChkLen(Len: int, MaxLen: int) -> int:
+	if Len > MaxLen:
+		return(Len)
+	else:
+		return(MaxLen)
+
+URL = 'https://store.steampowered.com/hwsurvey'
+Response = requests.get(URL, headers = {'User-Agent': 'Mozilla/5.0'})
+
+if Response.status_code == 200:
+	Bytes = Response.content
+	Lines = str(Bytes, 'utf-8').split("\n")
+else:
+	print("Err: Failed to retrieve remote data.", file = sys.stderr)
+	exit(1)
+
+Expr_OS = re.compile('.*<div class="stats_col_mid".*>(Linux|OSX|Windows)</div>')
+Expr_Date = re.compile('.*<div id="main_stats_header">')
+
+Count = 1
+OSX = ''
+Date = ''
+Linux = ''
+Windows = ''
+FoundOS = False
+FoundDate = False
+for Line in Lines:
+	Line = Line.rstrip()
+
+	if FoundOS:
+		Buffer = ''
+		TagEnd = False
+		for Char in Line:
+			if TagEnd:
+				if Char == '<': break
+
+				Buffer = f'{Buffer}{Char}'
+			elif Char == '>':
+				TagEnd = True
+
+		if Count == 1:
+			Windows = Buffer.strip()
+
+			Count += 1
+		elif Count == 2:
+			OSX = Buffer.strip()
+
+			Count += 1
+		elif Count == 3:
+			Linux = Buffer.strip()
+
+			break
+
+		FoundOS = False
+	elif FoundDate and not len(Date):
+		Buffer = ''
+		for Char in Line:
+			if Char == '<': break
+
+			Buffer = f'{Buffer}{Char}'
+
+		Date = Buffer.strip()
+
+		FoundDate = False
+	elif Expr_OS.match(Line):
+		FoundOS = True
+	elif Expr_Date.match(Line):
+		FoundDate = True
+
+MaxLenDate = len(Date)
+MaxLenLinux = ChkLen(len(Linux), 5)
+MaxLenOSX = ChkLen(len(OSX), 3)
+
+print(
+	'%*s %-*s %-*s %-s' % (
+		MaxLenDate, '', MaxLenLinux, 'LINUX',
+		MaxLenOSX, 'OSX', 'WINDOWS'
+	)
+)
+
+print(
+	'%*s %-*s %-*s %s' % (
+		MaxLenDate, Date, MaxLenLinux,
+		Linux, MaxLenOSX, OSX, Windows
+	)
+)
+
+# Shut up, Python!
+sys.stderr.close()
