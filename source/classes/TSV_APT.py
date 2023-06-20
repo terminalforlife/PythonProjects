@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/classes/TSV_APT.py
 # Started On        - Tue 20 Jun 01:20:22 BST 2023
-# Last Change       - Tue 20 Jun 17:53:36 BST 2023
+# Last Change       - Tue 20 Jun 17:56:17 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ class StatusFile:
 		except FileNotFoundError:
 			Err(1, "File '{File}' not found.")
 		except PermissionError:
-			Err(1, 'Permission denied.')
+			Err(1, "File '{File}' inaccessible.")
 
 		Self.Packages = {}
 
