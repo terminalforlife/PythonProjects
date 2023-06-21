@@ -1,10 +1,8 @@
 ### Description
 
-Admittedly, I'm not a huge fan of Python. I much prefer Perl. Perl seems to do many things better, either by being more concise or by just being intelligent, such as Perl's _sane_ string concatenation operator not being the same as a bloody standard _arithmetic operator_! In Python, the lack of standard features -- those you'd expect from just about _any_ programming language -- is also quite frustrating.
+Unlike my projects in [ShellProjects](https://github.com/terminalforlife/ShellProjects) and [PerlProjects](https://github.com/terminalforlife/PerlProjects), you won't _yet_ find my best work here, but I've been writing Python for a little while and I'm starting to get the hang of it. I'm not Python's biggest fan, but it's certainly growing on me; I can't deny how bloody useful it is.
 
-However, I am starting to appreciate Python. It certainly seems to excel in some areas. The large Python community is a bonus, and there are _loads_ of modules to use to get things done. The syntax in Python is consistent and focus on formatting helps encourage tidier code.
-
-I have no idea what I'll wind up doing with Python, if anything, but I will share the occasional Python script in this repository, and maybe one day I'll get to the point at which I'll be writing programs in Python. Until then, perhaps you'll find these scripts useful or at least educational.
+You won't find many command-line tools here, because Python seems to kind of suck for command-line tools (e.g., `PipeError`!), but for GTK programs, its vast library selection, and other bits and bobs, like Nemo scripts, it can be very nice.
 
 ### Contributions
 
