@@ -1,0 +1,116 @@
+#!/usr/bin/env python
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/nemo-scripts/new_dir_date.py
+# Started On        - Wed 21 Jun 20:15:53 BST 2023
+# Last Change       - Wed 21 Jun 22:06:45 BST 2023
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Pop up a GTK dialog in which you can create a directory prepended with a
+# date string. Simple, but pleasant enough to look at.
+#
+# To use this script, copy it into your '~/.local/share/nemo/scripts'
+# directory, then just make it executable.
+#
+# Written to address:
+#
+#   https://forums.linuxmint.com/viewtopic.php?t=398651
+#
+# NOTE: Because Python sucks for its version madness, you may need to adjust
+#       the shebang (first line) to point to your executable for Python. Just
+#       make sure it's in `$PATH`.
+#
+# Written and tested on Linux Mint 20.3 (Una), targetting >= Python 3.6.
+#------------------------------------------------------------------------------
+
+import os
+import sys
+import time
+
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
+class ErrWin(Gtk.Window):
+	def __init__(Self, ErrorStr: str = 'Unknown error occurred.'):
+		Gtk.Window.__init__(Self, title = 'Error')
+		Self.set_default_size(240, 40)
+		Self.set_resizable(False)
+		Self.set_border_width(10)
+
+		Grid = Gtk.Grid()
+		Self.add(Grid)
+
+		Label = Gtk.Label(label = ErrorStr)
+		Label.set_margin_start(10)
+		Label.set_margin_end(10)
+		Label.set_margin_top(10)
+		Label.set_margin_bottom(10)
+
+		Frame = Gtk.Frame(hexpand = True)
+		Frame.add(Label)
+		Grid.attach(Frame, 1, 1, 10, 1)
+
+		Button = Gtk.Button(label = 'OK')
+		Button.connect('clicked', Self.DestroyWin)
+		Button.set_margin_top(10)
+		Grid.attach(Button, 4, 2, 4, 1)
+
+		Self.connect('delete-event', Self.DestroyWin)
+
+		Self.show_all()
+
+	def DestroyWin(Self, *args):
+		Self.destroy()
+
+class MainWin(Gtk.Window):
+	def __init__(Self):
+		Gtk.Window.__init__(Self, title = 'New Folder')
+		Self.set_default_size(340, 40)
+		Self.set_resizable(False)
+		Self.set_border_width(10)
+
+		Grid = Gtk.Grid()
+		Self.add(Grid)
+
+		Year, Month, Day = time.localtime()[0:3]
+		Date = f'{Year}.{Month:02d}.{Day:02d}'
+
+		Self.Entry = Gtk.Entry(text = f'{Date} - ')
+		Self.Entry.set_width_chars(26)
+		Self.Entry.connect('activate', Self.MakeDir)
+		Grid.attach(Self.Entry, 1, 1, 1, 1)
+
+		Button = Gtk.Button(label = 'Create')
+		Button.connect('clicked', Self.MakeDir)
+		Button.set_margin_start(10)
+		Button.set_property('width-request', 110)
+		Grid.attach(Button, 2, 1, 2, 1)
+
+		Self.connect('delete-event', Gtk.main_quit)
+		Self.show_all()
+
+	def MakeDir(Self, Widget):
+		Text = Self.Entry.get_text()
+
+		try:
+			if len(Text):
+				os.mkdir(Text)
+
+				Gtk.main_quit()
+			else:
+				ErrWin('Folder name required.')
+
+				print(f"Err: Directory name required.", file = sys.stderr)
+		except FileExistsError:
+			ErrWin('Folder already exists.')
+
+			print(f"Err: Directory '{Text}' already exists.", file = sys.stderr)
+		except PermissionError:
+			ErrWin('Permission denied.')
+
+			print(f"Err: Permission denied.", file = sys.stderr)
+
+MainWin()
+Gtk.main()
