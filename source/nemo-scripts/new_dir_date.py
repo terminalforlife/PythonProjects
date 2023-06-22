@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/nemo-scripts/new_dir_date.py
 # Started On        - Wed 21 Jun 20:15:53 BST 2023
-# Last Change       - Wed 21 Jun 22:06:45 BST 2023
+# Last Change       - Thu 22 Jun 17:41:00 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -34,7 +34,9 @@ from gi.repository import Gtk
 
 class ErrWin(Gtk.Window):
 	def __init__(Self, ErrorStr: str = 'Unknown error occurred.'):
-		Gtk.Window.__init__(Self, title = 'Error')
+		Gtk.Window.__init__(Self, title = 'Error', modal = True)
+		Self.set_transient_for(Main)
+		Self.set_position(Gtk.Align.CENTER)
 		Self.set_default_size(240, 40)
 		Self.set_resizable(False)
 		Self.set_border_width(10)
@@ -67,6 +69,7 @@ class ErrWin(Gtk.Window):
 class MainWin(Gtk.Window):
 	def __init__(Self):
 		Gtk.Window.__init__(Self, title = 'New Folder')
+		Self.set_position(Gtk.Align.CENTER)
 		Self.set_default_size(340, 40)
 		Self.set_resizable(False)
 		Self.set_border_width(10)
@@ -112,5 +115,5 @@ class MainWin(Gtk.Window):
 
 			print(f"Err: Permission denied.", file = sys.stderr)
 
-MainWin()
+Main = MainWin()
 Gtk.main()
