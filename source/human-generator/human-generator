@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/human-generator/human-generator
 # Started On        - Thu  8 Jun 23:33:23 BST 2023
-# Last Change       - Thu 22 Jun 17:51:49 BST 2023
+# Last Change       - Thu 22 Jun 18:05:20 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -92,10 +92,16 @@ class ErrorWin(Gtk.Window):
 		Button = Gtk.Button(label = 'OK')
 		Button.connect('clicked', Self.DestroyWin)
 		Button.set_margin_top(10)
+		Button.set_property('width-request', 50)
 
 		ErrLabel = Label(Message, False)
+		ErrLabel.set_valign(Gtk.Align.CENTER)
+		ErrLabel.set_property('width-chars', 30)
 
-		Grid.attach(ErrLabel, 1, 1, 8, 1)
+		Frame = Gtk.Frame(vexpand = True)
+		Frame.add(ErrLabel)
+		Grid.attach(Frame, 1, 1, 8, 1)
+
 		Grid.attach(Button, 4, 2, 2, 1)
 
 		Self.connect('delete-event', Self.DestroyWin)
