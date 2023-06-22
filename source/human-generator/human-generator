@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/human-generator/human-generator
 # Started On        - Thu  8 Jun 23:33:23 BST 2023
-# Last Change       - Fri  9 Jun 22:14:05 BST 2023
+# Last Change       - Thu 22 Jun 17:51:49 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ def Human(Power, Bytes) -> int:
 class MainCombo(Gtk.ComboBoxText):
 	def __init__(Self):
 		Gtk.ComboBoxText.__init__(Self)
-		Self.set_margin_right(10)
+		Self.set_margin_end(10)
 		Self.append_text('IEC (1024)')
 		Self.append_text('SI (1000)')
 		Self.set_active(0)
@@ -72,15 +72,17 @@ class Label(Gtk.Label):
 	def __init__(Self, Message, Selectable):
 		Gtk.Label.__init__(Self, Message)
 		Self.set_margin_bottom(10)
-		Self.set_margin_left(10)
-		Self.set_margin_right(10)
+		Self.set_margin_start(10)
+		Self.set_margin_end(10)
 		Self.set_margin_top(10)
 		Self.set_selectable(Selectable)
 
 class ErrorWin(Gtk.Window):
 	def __init__(Self, Message):
-		Gtk.Window.__init__(Self, title = 'Error')
-		Self.set_default_geometry(120, 20)
+		Gtk.Window.__init__(Self, title = 'Error', modal = True)
+		Self.set_position(Gtk.Align.CENTER)
+		Self.set_transient_for(Main)
+		Self.set_default_size(120, 20)
 		Self.set_resizable(False)
 		Self.set_border_width(10)
 
@@ -106,7 +108,8 @@ class ErrorWin(Gtk.Window):
 class MainWin(Gtk.Window):
 	def __init__(Self):
 		Gtk.Window.__init__(Self, title = 'Human Generator')
-		Self.set_default_geometry(300, 40)
+		Self.set_position(Gtk.Align.CENTER)
+		Self.set_default_size(300, 40)
 		Self.set_resizable(False)
 		Self.set_border_width(10)
 
@@ -117,8 +120,9 @@ class MainWin(Gtk.Window):
 		ButtonSubmit.connect('clicked', Self.Generate)
 
 		Self.Entry = Gtk.Entry()
-		Self.Entry.set_margin_right(10)
+		Self.Entry.set_margin_end(10)
 		Self.Entry.set_margin_bottom(10)
+		Self.Entry.connect('activate', Self.Generate)
 
 		Self.Label = Label(None, True)
 		Self.Combo = MainCombo()
@@ -153,6 +157,6 @@ class MainWin(Gtk.Window):
 		else:
 			ErrWin = ErrorWin(Message = 'Please enter a number.')
 
-MainWin = MainWin()
+Main = MainWin()
 
 Gtk.main()
