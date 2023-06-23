@@ -2,6 +2,8 @@
 
 Simple but pleasant GUI providing a means to create a new folder with the date prepended, in the format 'YYYY.MM.DD - '
 
+![Example Image](image.jpg)
+
 Written to help a user on the Linux Mint support forums. You can get more information over on [this](https://forums.linuxmint.com/viewtopic.php?t=398651) thread.
 
 ### Installation
