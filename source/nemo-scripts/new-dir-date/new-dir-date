@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/nemo-scripts/new_dir_date.py
 # Started On        - Wed 21 Jun 20:15:53 BST 2023
-# Last Change       - Thu 22 Jun 17:41:00 BST 2023
+# Last Change       - Thu 22 Jun 18:33:36 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -45,6 +45,8 @@ class ErrWin(Gtk.Window):
 		Self.add(Grid)
 
 		Label = Gtk.Label(label = ErrorStr)
+		Label.set_valign(Gtk.Align.CENTER)
+		Label.set_property('width-chars', 30)
 		Label.set_margin_start(10)
 		Label.set_margin_end(10)
 		Label.set_margin_top(10)
