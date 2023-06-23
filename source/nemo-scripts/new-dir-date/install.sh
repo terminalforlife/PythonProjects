@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 #------------------------------------------------------------------------------
-# Project Name      -
+# Project Name      - PythonProjects/source/nemo-scripts/new-dir-date/install.sh
 # Started On        - Fri 23 Jun 12:30:19 BST 2023
-# Last Change       - Fri 23 Jun 15:52:08 BST 2023
+# Last Change       - Fri 23 Jun 15:58:13 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -24,10 +24,19 @@ elif (( UID == 0 )); then
 	exit 1
 fi
 
-if wget -qO "$Dir/$TargetFile" "$URL"; then
+if type -P wget &> /dev/null; then
+	Get='wget -qO '
+elif type -P curl &> /dev/null; then
+	Get='curl -so '
+else
+	printf "Err: Neither Wget nor cURL found.\n" 1>&2
+	exit 1
+fi
+
+if $Get "$Dir/$TargetFile" "$URL"; then
 	chmod u+x "$Dir/$TargetFile"
 else
-	printf 'Err: Failed to download data.\n' 1>&2
+	printf "Err: Unable to download data.\n" 1>&2
 	exit 1
 fi
 
@@ -35,9 +44,9 @@ OS_File='/etc/os-release'
 if [[ -f $OS_File ]]; then
 	while IFS='=' read Key Value; do
 		if [[ $Key == NAME ]]; then
-			Name=$Value
+			Name=${Value//\"}
 		elif [[ $Key == VERSION_ID ]]; then
-			LM_Version="${Value//[\"\']}"
+			LM_Version=${Value//\"}
 		fi
 	done < "$OS_File"
 else
