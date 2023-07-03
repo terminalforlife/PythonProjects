@@ -3,13 +3,13 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/groupfix
 # Started On        - Mon  3 Jul 17:22:31 BST 2023
-# Last Change       - Mon  3 Jul 18:28:26 BST 2023
+# Last Change       - Mon  3 Jul 18:31:03 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
 # Output a suitable command for adding back users which were accidentally
 # blasted away by using `-G` with usermod(8) without `-a` to append the
-# group(s). This will parse a logfile for the names, in order to general the
+# group(s). This will parse a logfile for the names, in order to generate the
 # command.
 #
 # This only works based on how the system was initially installed, because it's
