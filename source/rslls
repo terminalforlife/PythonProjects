@@ -1,0 +1,90 @@
+#!/usr/bin/env python3.6
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/rslls
+# Started On        - Mon 10 Jul 22:53:15 BST 2023
+# Last Change       - Tue 11 Jul 00:03:56 BST 2023
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Simple but tidy script to list found log files set in '/etc/rsyslog.conf', -
+# with their mode, UID, GID, and file size. Sizes are in human-readable format
+# (IEC), and modes are octal. Paths with globs are expanded and each one
+# listed, if found. Results are displayed in a dynamically-sized table as
+# `MODE UID GID SIZE FILE` format.
+#
+# Dependencies:
+#
+#   python (>= 3.6)
+#------------------------------------------------------------------------------
+
+File = '/etc/rsyslog.conf'
+
+from glob import glob
+import stat
+import sys
+import os
+
+try:
+	Lines: list
+	with open(File, 'rt') as FH:
+		Lines = FH.readlines()
+except FileNotFoundError:
+	print("Err: File '{File}' not found.", file = sys.stderr)
+	exit(1)
+except PermissionError:
+	print("Err: File '{File}' inaccessible.", file = sys.stderr)
+	exit(1)
+
+def ChkLen(Len: int, MaxLen: int) -> int:
+	if Len > MaxLen:
+		return(Len)
+	else:
+		return(MaxLen)
+
+def Human(Bytes: int, Power: int = 1024) -> str:
+	if Bytes < Power: return(Bytes)
+
+	for Unit in 'K', 'M', 'G', 'P', 'T', 'E', 'Z', 'Y':
+		if Bytes < Power:
+			Size = str(f'{Bytes:0.2f}')
+			if Size[-2:] == '00':
+				return(f'{Size[0:-3]}{Unit}')
+			else:
+				return(f'{Size}{Unit}')
+
+		Bytes /= Power
+
+Result = {}
+MaxLens = [0] * 4
+for Line in Lines:
+	Line = Line.rstrip()
+
+	if len(Line) == 0: continue
+	if Line[0] == '#': continue
+
+	Value = Line.split()[1]
+	if Value[0] == '/':
+		Files: list = glob(Value)
+		if len(Files) <= 1: continue
+
+		for File in Files:
+			if not os.path.isfile(File): continue
+
+			Mode = oct(stat.S_IMODE(os.stat(File)[0]))[2:]
+			Size = Human(os.stat(File).st_size)
+			UID = os.stat(File).st_uid
+			GID = os.stat(File).st_gid
+
+			for Index, Value in enumerate((Mode, UID, GID, Size)):
+				MaxLens[Index] = ChkLen(len(str(Value)), MaxLens[Index])
+
+			Result[File] = (Mode, UID, GID, Size)
+
+for File in Result:
+	Values = (
+		MaxLens[0], Result[File][0], MaxLens[1], Result[File][1],
+		MaxLens[2], Result[File][2], MaxLens[3], Result[File][3], File
+	)
+
+	print('%*s %*s %*s %*s %s' % Values)
