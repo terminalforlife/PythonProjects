@@ -1,0 +1,61 @@
+#!/usr/bin/env python3.6
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/greedydebs
+# Started On        - Wed 12 Jul 01:09:18 BST 2023
+# Last Change       - Wed 12 Jul 01:43:23 BST 2023
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Calculate total size taken up by installed packages, determined solely by the
+# '*.list' files in '/var/lib/dpkg/info'; because of this, it should be used as
+# an estimation.
+#
+# Very similar to debttl: 'PerlProjects/source/debttl'
+#
+# Dependencies:
+#
+#   python (>= 3.6)
+#------------------------------------------------------------------------------
+
+import os
+import sys
+from glob import glob
+
+def Err(Status: int, Message: str) -> None:
+	print(f'\033[91mE\033[0m: {Message}', file = sys.stderr)
+	if Status > 0: exit(Status)
+
+def Human(Bytes: int, Power: int = 1024) -> str:
+	if Bytes < Power: return(str(Bytes))
+
+	for Unit in 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y':
+		Bytes /= Power
+
+		if Bytes < Power:
+			Size = f'{Bytes:0.1f}'
+			if Size[-2:] == '.0':
+				return(f'{Size[0:-2]}{Unit}')
+			else:
+				return(f'{Size}{Unit}')
+
+Total = 0
+for File in glob(f'/var/lib/dpkg/info/*.list'):
+	Basename = File.split('/')[-1]
+
+	try:
+		SubTotal = 0
+		with open(File, 'rt') as FH:
+			for Line in FH.readlines():
+				Line = Line.rstrip()
+
+				if os.path.isfile(Line):
+					SubTotal += os.stat(Line).st_size
+	except FileNotFoundError:
+		Err(0, "File '{Basename}' not found.")
+	except PermissionError:
+		Err(1, "File '{Basename}' inaccessible.")
+
+	Total += SubTotal
+
+print(f'Total: {Human(Total)}')
