@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/rslls
 # Started On        - Mon 10 Jul 22:53:15 BST 2023
-# Last Change       - Wed 12 Jul 01:16:45 BST 2023
+# Last Change       - Wed 12 Jul 01:29:29 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -46,14 +46,14 @@ def Human(Bytes: int, Power: int = 1024) -> str:
 	if Bytes < Power: return(str(Bytes))
 
 	for Unit in 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y':
+		Bytes /= Power
+
 		if Bytes < Power:
 			Size = str(f'{Bytes:0.1f}')
 			if Size[-1:] == '0':
 				return(f'{Size[0:-2]}{Unit}')
 			else:
 				return(f'{Size}{Unit}')
-
-		Bytes /= Power
 
 Result = {}
 MaxLens = [0] * 4
