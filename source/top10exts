@@ -1,0 +1,72 @@
+#!/usr/bin/env python3.6
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/top10exts
+# Started On        - Wed 12 Jul 22:47:03 BST 2023
+# Last Change       - Thu 13 Jul 00:14:25 BST 2023
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Display a sorted list of the top 10 extensions found in $1, recursively.
+#
+# Dependencies:
+#
+#   python (>= 3.6)
+#------------------------------------------------------------------------------
+
+import os
+import sys
+
+Files = []
+def Recurse(Dir: str = '.'):
+	try:
+		for File in os.listdir(Dir):
+			File = os.path.join(Dir, File)
+
+			if os.path.isfile(File):
+				Files.append(File)
+			elif os.path.isdir(File):
+				Recurse(File)
+	except PermissionError:
+		pass
+
+try:
+	Recurse(sys.argv[1])
+except IndexError:
+	print('E: Target directory required.', file = sys.stderr)
+	exit(1)
+
+Exts = {}
+for File in Files:
+	Basename = File.split('/')[-1]
+	if Basename[0] == '.':
+		Dirname = '/'.join(File.split('/')[:-1])
+		File = f'{Dirname}/{Basename[1:]}'
+
+	Count = 0
+	Found = False
+	for Char in Basename[::-1]:
+		if Char == '.':
+			Found = True
+			break
+
+		Count += 1
+
+	if Found:
+		Ext = File[-Count:].upper()
+
+		if Ext in Exts:
+			Exts[Ext] += 1
+		else:
+			Exts[Ext] = 1
+
+Top10 = sorted(Exts, key = Exts.get, reverse = True)[:10]
+
+MaxLen = 0
+for Key in Top10:
+	Len = len(Key)
+	if Len > MaxLen:
+		MaxLen = Len
+
+for Key in Top10:
+	print('%*s %s' % (MaxLen, Key, Exts[Key]))
