@@ -3,19 +3,19 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/top10exts
 # Started On        - Wed 12 Jul 22:47:03 BST 2023
-# Last Change       - Thu 13 Jul 00:14:25 BST 2023
+# Last Change       - Thu 27 Jul 23:52:15 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
-# Display a sorted list of the top 10 extensions found in $1, recursively.
+# Display a sorted list of the top 10 extensions found in directory $1, -
+# recursively.
 #
 # Dependencies:
 #
 #   python (>= 3.6)
 #------------------------------------------------------------------------------
 
-import os
-import sys
+import os, sys
 
 Files = []
 def Recurse(Dir: str = '.'):
@@ -34,7 +34,7 @@ try:
 	Recurse(sys.argv[1])
 except IndexError:
 	print('E: Target directory required.', file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 Exts = {}
 for File in Files:
@@ -52,13 +52,14 @@ for File in Files:
 
 		Count += 1
 
-	if Found:
-		Ext = File[-Count:].upper()
+	if not Found: continue
 
-		if Ext in Exts:
-			Exts[Ext] += 1
-		else:
-			Exts[Ext] = 1
+	Ext = File[-Count:].upper()
+
+	if Ext in Exts:
+		Exts[Ext] += 1
+	else:
+		Exts[Ext] = 1
 
 Top10 = sorted(Exts, key = Exts.get, reverse = True)[:10]
 

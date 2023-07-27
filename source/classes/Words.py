@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/classes/Words.py
 # Started On        - Thu 25 May 12:51:27 BST 2023
-# Last Change       - Tue 20 Jun 17:48:52 BST 2023
+# Last Change       - Fri 28 Jul 00:00:02 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -15,9 +15,7 @@
 # Includes some demonstrations at the end, because I got a bit carried away.
 #------------------------------------------------------------------------------
 
-import random
-import sys
-import re
+import sys, re, random
 
 class Words():
 	Words = []

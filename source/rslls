@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/rslls
 # Started On        - Mon 10 Jul 22:53:15 BST 2023
-# Last Change       - Thu 13 Jul 18:36:30 BST 2023
+# Last Change       - Thu 27 Jul 23:48:44 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -18,23 +18,20 @@
 #   python (>= 3.6)
 #------------------------------------------------------------------------------
 
+import os, sys, stat
+from glob import glob
+
 File = '/etc/rsyslog.conf'
 
-from glob import glob
-import stat
-import sys
-import os
-
 try:
-	Lines: list
 	with open(File, 'rt') as FH:
-		Lines = map(str.rstrip(), FH.readlines())
+		Lines = map(str.rstrip, FH.readlines())
 except FileNotFoundError:
 	print("Err: File '{File}' not found.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 except PermissionError:
 	print("Err: File '{File}' inaccessible.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 def ChkLen(Len: int, MaxLen: int) -> int:
 	if Len > MaxLen:
@@ -62,22 +59,23 @@ for Line in Lines:
 	if Line[0] == '#': continue
 
 	Value = Line.split()[1]
-	if Value[0] == '/':
-		Files: list = glob(Value)
-		if len(Files) <= 1: continue
+	if Value[0] != '/': continue
 
-		for File in Files:
-			if not os.path.isfile(File): continue
+	Files = glob(Value)
+	if len(Files) <= 1: continue
 
-			Mode = oct(stat.S_IMODE(os.stat(File)[0]))[2:]
-			Size = Human(os.stat(File).st_size)
-			UID = os.stat(File).st_uid
-			GID = os.stat(File).st_gid
+	for File in Files:
+		if not os.path.isfile(File): continue
 
-			for Index, Value in enumerate((Mode, UID, GID, Size)):
-				MaxLens[Index] = ChkLen(len(str(Value)), MaxLens[Index])
+		Mode = oct(stat.S_IMODE(os.stat(File)[0]))[2:]
+		Size = Human(os.stat(File).st_size)
+		UID = os.stat(File).st_uid
+		GID = os.stat(File).st_gid
 
-			Result[File] = (Mode, UID, GID, Size)
+		for Index, Value in enumerate((Mode, UID, GID, Size)):
+			MaxLens[Index] = ChkLen(len(str(Value)), MaxLens[Index])
+
+		Result[File] = (Mode, UID, GID, Size)
 
 for File in Result:
 	Values = (

@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/miscellaneous/kernel-version.py
 # Started On        - Thu  8 Jun 01:33:42 BST 2023
-# Last Change       - Mon 19 Jun 23:34:57 BST 2023
+# Last Change       - Thu 27 Jul 23:30:46 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -34,4 +34,4 @@ if len(Version):
 	print(Version)
 else:
 	print('Err: Failed to acquire kernel version.', file = sys.stderr)
-	exit(1)
+	sys.exit(1)

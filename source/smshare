@@ -3,16 +3,14 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/smshare
 # Started On        - Tue 20 Jun 13:52:15 BST 2023
-# Last Change       - Tue 20 Jun 17:54:40 BST 2023
+# Last Change       - Thu 27 Jul 23:50:23 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
 # Gather primary markshare statistic for Steam, for Linux, OSX, and Windows.
 #------------------------------------------------------------------------------
 
-import requests
-import sys
-import re
+import sys, re, requests
 
 def ChkLen(Len: int, MaxLen: int) -> int:
 	if Len > MaxLen:
@@ -28,7 +26,7 @@ if Response.status_code == 200:
 	Lines = str(Bytes, 'utf-8').split("\n")
 else:
 	print("Err: Failed to retrieve remote data.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 Expr_OS = re.compile('.*<div class="stats_col_mid".*>(Linux|OSX|Windows)</div>')
 Expr_Date = re.compile('.*<div id="main_stats_header">')

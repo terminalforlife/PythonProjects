@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/nemo-scripts/new_dir_date.py
 # Started On        - Wed 21 Jun 20:15:53 BST 2023
-# Last Change       - Thu 22 Jun 18:33:36 BST 2023
+# Last Change       - Fri 28 Jul 00:01:33 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -24,9 +24,7 @@
 # Written and tested on Linux Mint 20.3 (Una), targetting >= Python 3.6.
 #------------------------------------------------------------------------------
 
-import os
-import sys
-import time
+import os, sys, time
 
 import gi
 gi.require_version('Gtk', '3.0')

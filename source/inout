@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/miscellaneous/inout.py
 # Started On        - Mon  5 Jun 13:12:57 BST 2023
-# Last Change       - Wed 12 Jul 01:51:55 BST 2023
+# Last Change       - Thu 27 Jul 23:30:38 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -17,17 +17,16 @@
 #   python (>= 3.6)
 #------------------------------------------------------------------------------
 
-import os
-import sys
+import os, sys
 
 File = '/proc/net/dev'
 
 if not os.path.isfile(File):
 	print(f"Err: File '{File}' not found.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 elif len(sys.argv[1:]):
 	print('Err: No arguments required.', file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 def Human(Bytes: int, Power = 1024) -> str:
 	if Bytes < Power: return(str(Bytes))

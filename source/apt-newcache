@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/apt-newcache
 # Started On        - Mon 19 Jun 22:18:00 BST 2023
-# Last Change       - Mon 19 Jun 23:14:54 BST 2023
+# Last Change       - Thu 27 Jul 23:29:19 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -20,15 +20,13 @@
 #          bye-bye. The only thing which will be held back, is the 'lock' file.
 #------------------------------------------------------------------------------
 
-import os
-import sys
-import shutil
-
-Path = '/var/lib/apt/lists'
+import os, sys, shutil
 
 if len(sys.argv) > 1:
 	print(f"Err: No arguments accepted.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
+
+Path = '/var/lib/apt/lists'
 
 try:
 	Bases = os.listdir(Path)
@@ -47,10 +45,10 @@ try:
 
 	if Found == 0:
 		print(f"Err: Nothing to delete.", file = sys.stderr)
-		exit(2)
+		sys.exit(2)
 except FileNotFoundError:
 	print(f"Err: Directory '{Path}' not found.", file = sys.stderr)
-	exit(3)
+	sys.exit(3)
 except PermissionError:
 	print("Err: Permission denied -- are you 'root'?", file = sys.stderr)
-	exit(1)
+	sys.exit(1)

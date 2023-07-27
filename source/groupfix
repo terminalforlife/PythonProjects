@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/groupfix
 # Started On        - Mon  3 Jul 17:22:31 BST 2023
-# Last Change       - Thu 13 Jul 18:37:34 BST 2023
+# Last Change       - Thu 27 Jul 23:30:21 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -30,15 +30,13 @@
 #   python (>= 3.6)
 #------------------------------------------------------------------------------
 
-import os
-import sys
-import subprocess
+import os, sys, subprocess
 
 File = '/var/log/installer/syslog'
 
 if len(sys.argv) <= 1:
 	print(f"Err: Username required.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 sys.argv = sys.argv[1:]
 while len(sys.argv) > 0:
@@ -49,7 +47,7 @@ while len(sys.argv) > 0:
 			File = sys.argv[0]
 		else:
 			print(f"Err: Option {Flag} requires FILE.", file = sys.stderr)
-			exit(1)
+			sys.exit(1)
 	elif sys.argv[0][0] != '-':
 		break
 
@@ -59,7 +57,7 @@ if len(sys.argv) == 1:
 	User = sys.argv[0]
 else:
 	print(f"Err: Option {Flag} requires 'syslog'-type file.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 try:
 	Lines = []
@@ -67,10 +65,10 @@ try:
 		Lines = map(str.rstrip, FH.readlines())
 except FileNotFoundError:
 	print(f"Err: File '{File}' not found.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 except PermissionError:
 	print(f"Err: File '{File}' inaccessible.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 Groups = []
 for Line in Lines:
@@ -81,6 +79,6 @@ for Line in Lines:
 
 if len(Groups) == 0:
 	print(f"Err: Unable to gather groups.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 print(f"usermod -G {','.join(Groups)} {User}")

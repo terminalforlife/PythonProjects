@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/greedydebs
 # Started On        - Wed 12 Jul 01:09:18 BST 2023
-# Last Change       - Wed 12 Jul 01:43:23 BST 2023
+# Last Change       - Thu 27 Jul 23:29:37 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -18,13 +18,12 @@
 #   python (>= 3.6)
 #------------------------------------------------------------------------------
 
-import os
-import sys
+import os, sys
 from glob import glob
 
 def Err(Status: int, Message: str) -> None:
 	print(f'\033[91mE\033[0m: {Message}', file = sys.stderr)
-	if Status > 0: exit(Status)
+	if Status > 0: sys.exit(Status)
 
 def Human(Bytes: int, Power: int = 1024) -> str:
 	if Bytes < Power: return(str(Bytes))

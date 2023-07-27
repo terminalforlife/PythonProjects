@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/classes/TSV_APT.py
 # Started On        - Tue 20 Jun 01:20:22 BST 2023
-# Last Change       - Tue 20 Jun 17:56:17 BST 2023
+# Last Change       - Thu 27 Jul 23:58:04 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -36,9 +36,9 @@
 
 import sys
 
-def Err(Status, Message):
+def Err(Status: int, Message: str) -> None:
 	print(f"Err: {Message}", file = sys.stderr)
-	if Status > 0: exit(Status)
+	if Status: sys.exit(Status)
 
 class StatusFile:
 	def __init__(Self, File: str = '/var/lib/dpkg/status'):
