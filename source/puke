@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/puke
 # Started On        - Tue  6 Jun 23:36:54 BST 2023
-# Last Change       - Thu 27 Jul 23:45:12 BST 2023
+# Last Change       - Fri 28 Jul 00:05:39 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -12,7 +12,11 @@
 
 import os, sys, random
 
-File = sys.argv[1]
+try:
+	File = sys.argv[1]
+except IndexError:
+	print('Err: File path required.', file = sys.stderr)
+	sys.exit(1)
 
 Colors = []
 for Color in list(range(31, 38)) + list(range(91, 98)):
