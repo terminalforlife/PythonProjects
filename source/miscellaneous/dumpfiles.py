@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/miscellaneous/dumpfiles.py
 # Started On        - Sat  3 Jun 22:37:20 BST 2023
-# Last Change       - Mon 19 Jun 23:34:57 BST 2023
+# Last Change       - Fri  4 Aug 14:29:15 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -45,4 +45,4 @@ if len(sys.argv) == 2:
 else:
 	print("Err: Argument required.", file=sys.stderr)
 
-	exit(1)
+	sys.exit(1)

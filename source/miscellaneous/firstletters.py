@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/miscellaneous/firstletters.py
 # Started On        - Mon 24 Jul 14:47:25 BST 2023
-# Last Change       - Mon 24 Jul 15:47:40 BST 2023
+# Last Change       - Fri  4 Aug 14:29:26 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -34,10 +34,10 @@ try:
 				Words.append(Line)
 except FileNotFoundError:
 	print(f"E: File '{File}' not found.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 except PermissionError:
 	print(f"E: File '{File}' inaccessible.", file = sys.stderr)
-	exit(1)
+	sys.exit(1)
 
 print('RANK,LETTER,COUNT')
 

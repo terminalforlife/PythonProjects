@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/miscellaneous/edit-file.py
 # Started On        - Wed  7 Jun 13:31:38 BST 2023
-# Last Change       - Mon 19 Jun 23:34:57 BST 2023
+# Last Change       - Fri  4 Aug 14:29:21 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -46,6 +46,6 @@ try:
 
 		print("\n".join(Data), file = FH)
 except FileNotFoundError:
-	exit(1)
+	sys.exit(1)
 except PermissionError:
-	exit(1)
+	sys.exit(1)
