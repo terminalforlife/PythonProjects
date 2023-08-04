@@ -3,58 +3,40 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/miscellaneous/getuid.py
 # Started On        - Wed 24 May 23:08:13 BST 2023
-# Last Change       - Mon 19 Jun 23:34:57 BST 2023
+# Last Change       - Fri  4 Aug 14:35:10 BST 2023
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
-# Manually parse '/etc/passwd' character-by-character to fetch UID from the
-# user given to the script as an argument. If no argument is provided, display
-# the current user's UID. Essentially, `id -u [USER]`.
+# Parse '/etc/passwd' to fetch UID from the user given to the script as an
+# argument. If no argument is provided, display the current user's UID.
+# Essentially, id(1)'s `-u` flag.
 #
-# The character-by-character approach is probaly pointless here, but it was
-# good experience in getting used to Python, without resorting to methods and
-# functions I don't know yet.
+# Dependencies:
+#
+#   python (>= 3.6)
 #------------------------------------------------------------------------------
 
-from sys import argv, stderr
-from os import environ
+import os, sys
 
-if len(argv) == 1:
-	userArg = environ['USER']
+if len(sys.argv) == 1:
+	Arg = os.environ.get('USER')
 else:
-	userArg = argv[1]
+	Arg = sys.argv[1]
 
-file = '/etc/passwd'
+File = '/etc/passwd'
 
 try:
-	fh = open(file, 'rt')
+	with open(File, 'rt') as FP:
+		for Line in map(str.rstrip, FP.readlines()):
+			USER, _, UID = Line.split(':')[:3]
 
-	for line in fh:
-		line = line.rstrip()
+			if Arg == USER:
+				print(UID)
 
-		sepCount = 0
-		out, user = '', ''
-		for index in range(0, len(line)):
-			char =  line[index]
-			if char == ':':
-				sepCount += 1
-			elif sepCount == 1:
-				user = out
-				out = ''
-			elif sepCount == 3:
-				if user == userArg:
-					print(out)
-
-					break
-
-				out = ''
-			else:
-				out = out + char
-
-	fh.close()
+				break
 except FileNotFoundError:
-	print("Err: File '{}' not found.".format(file), file=stderr)
-	exit(1)
+	print(f"E: File '{File}' not found.", file = sys.stderr)
+	sys.exit(1)
 except PermissionError:
-	print("Err: File '{}' inaccessible.".format(file), file=stderr)
-	exit(1)
+	print(f"E: File '{File}' inaccessible.", file = sys.stderr)
+	sys.exit(1)
