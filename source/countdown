@@ -1,0 +1,88 @@
+#!/usr/bin/env python3.6
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/countdown
+# Started On        - Thu 10 Aug 22:33:18 BST 2023
+# Last Change       - Mon 21 Aug 00:32:37 BST 2023
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Display a suitable terse countdown (Dd HH:MM:SS) to a given SSE* or given
+# number of seconds (if '+N'). The use of '+' is not for SSE, but is a
+# traditional timer whose target is in seconds. SSE is for the
+# non-'+' form. The days will only be shown when relevant.
+#
+# * SSE being seconds since Epoch, which is the total seconds elapsed since
+#   1970-01-01 00:00:00 (UTC), at least in Linux-based operating systems.
+#
+# Examples:
+#
+#   $ countdown +3600
+#   $ countdown 1693958400
+#   $ countdown `date -d tomorrow +%s`
+#   $ countdown `date -d 2023-12-25 +%s`
+#   $ countdown +1800 && notify-send 'Time to do that thing!'
+#
+# Making use of date(1), or the `printf` builtin in BASH (>= 4.2), you can more
+# easily create countdowns to a given point in time. It's a bit of a clunky
+# system, admittedly, but it works well. If you're using BASH >= 5.0, you can
+# also make use of the special `$EPOCHSECONDS` variable.
+#
+# Enter Ctrl + C to exit the utility.
+#
+# Usage: $0 {+S|SSE}
+#------------------------------------------------------------------------------
+
+import sys, time
+
+if len(sys.argv) <= 1:
+	print('E: Argument required.', file = sys.stderr)
+	sys.exit(1)
+
+Target = sys.argv[1]
+
+if Target[0] == '+':
+	InitialSSE = time.time()
+
+try:
+	while True:
+		SSE = time.time()
+
+		if Target[0] == '+':
+			Seconds = InitialSSE + int(Target[1:]) - SSE
+		else:
+			Seconds = int(Target) - SSE
+
+		if Seconds <= 0:
+			print('\rTarget reached.\033[K')
+
+			break
+
+		Days = 0
+		Hours = 0
+		Minutes = 0
+
+		while Seconds >= 86400:
+			Seconds -= 86400
+			Days += 1
+
+		while Seconds >= 3600:
+			Seconds -= 3600
+			Hours += 1
+
+		while Seconds >= 60:
+			Seconds -= 60
+			Minutes += 1
+
+		Fields = (Days, Hours, Minutes, Seconds)
+
+		if Days:
+			print('\r%dd %02d:%02d:%02d\033[K' % Fields, end = '')
+		else:
+			print('\r%02d:%02d:%02d\033[K' % Fields[1:], end = '')
+
+		time.sleep(1)
+except KeyboardInterrupt:
+	print()
+
+	sys.exit(130)
