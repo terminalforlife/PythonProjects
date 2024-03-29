@@ -1,0 +1,65 @@
+#!/usr/bin/env python3.6
+
+#------------------------------------------------------------------------------
+# Project Name      - PythonProjects/source/avgbpp
+# Started On        - Thu 28 Mar 17:56:57 GMT 2024
+# Last Change       - Fri 29 Mar 14:52:25 GMT 2024
+# Author E-Mail     - terminalforlife@yahoo.com
+# Author GitHub     - https://github.com/terminalforlife
+#------------------------------------------------------------------------------
+# Display the average blood pressure and pulse rate, based on what is logged in
+# the specified file. The format of the file should be:
+#
+#   YYYY-MM-DD HH:MM:SS SYS/DIA PUL ...
+#
+# Where the ellipsis contains extra information outside the scope of this tool.
+# Blank lines and comment lines (RE: '^#') are ignored. This script is not very
+# robust, as it's just written for me, so ensure the formatting in the log file
+# is correct and change the `File` variable accordingly, if you plan to use it.
+#
+# NOTE: This script assumes one entry per day.
+#------------------------------------------------------------------------------
+
+import os, sys
+
+HOME = os.environ.get('HOME')
+File = HOME + '/Desktop/Blood_Pressure.log'
+FilePretty = File.replace(HOME, '~', 1)
+
+try:
+	FH = open(File, 'r')
+
+	Data = {}
+	for Line in FH.readlines():
+		Line = Line.rstrip()
+
+		if not len(Line): continue
+		if Line[0] == '#': continue
+
+		Date, Time, Pressure, Pulse = Line.split(' ')[0:4]
+		Data[Date] = [Time, Pressure, Pulse]
+
+	FH.close()
+except FileNotFoundError:
+	print(f"Err: File '%s' not found.\n" % FilePretty)
+	sys.exit(1)
+except PermissionError:
+	print(f"Err: File '%s' inaccessible.\n" % FilePretty)
+	sys.exit(1)
+
+SYS_Total = 0
+DIA_Total = 0
+PUL_Total = 0
+Count = len(Data)
+for Key, Value in Data.items():
+	SYS, DIA = Value[1].split('/')
+
+	SYS_Total += int(SYS)
+	DIA_Total += int(DIA)
+	PUL_Total += int(Value[2])
+
+SYS_Average = SYS_Total / Count
+DIA_Average = DIA_Total / Count
+PUL_Average = PUL_Total / Count
+
+print(f'AVG: %0.1f/%0.1f %0.1f' % (SYS_Average, DIA_Average, PUL_Average))
