@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 # Project Name      - PythonProjects/source/avgbpp
 # Started On        - Thu 28 Mar 17:56:57 GMT 2024
-# Last Change       - Fri 29 Mar 14:52:25 GMT 2024
+# Last Change       - Sun 31 Mar 00:11:56 GMT 2024
 # Author E-Mail     - terminalforlife@yahoo.com
 # Author GitHub     - https://github.com/terminalforlife
 #------------------------------------------------------------------------------
@@ -17,6 +17,13 @@
 # robust, as it's just written for me, so ensure the formatting in the log file
 # is correct and change the `File` variable accordingly, if you plan to use it.
 #
+# CAUTION: The colorization of the numbers is NOT to be taken as medical
+#          advice, but only to be used as a basic guide, according to numbers
+#          found via the Internet. Refer to a qualified healthcare professional
+#          to determine suitable ranges for the user. The accuracy and
+#          reliability of this script and its results cannot and will not be
+#          guaranteed, therefore user discretion is required.
+#
 # NOTE: This script assumes one entry per day.
 #------------------------------------------------------------------------------
 
@@ -25,6 +32,50 @@ import os, sys
 HOME = os.environ.get('HOME')
 File = HOME + '/Desktop/Blood_Pressure.log'
 FilePretty = File.replace(HOME, '~', 1)
+
+def TidyNr(Float):
+	Float = str(f'{Float:0.1f}')
+	if str(Float)[-2:] == '.0':
+		return(Float[:-2])
+	else:
+		return(Float)
+
+def Plural(Integer, Singular, Plural):
+	if Integer > 1:
+		return(Plural)
+	else:
+		return(Singular)
+
+def ChkBP(StringBP):
+	SYS, DIA = StringBP.split('/')
+	SYS = float(SYS)
+	DIA = float(DIA)
+
+	if SYS > 135 or SYS < 90:
+		SYS_Color = "\033[91m"
+	elif SYS > 120:
+		SYS_Color = "\033[93m"
+	elif SYS >= 90:
+		SYS_Color = "\033[92m"
+
+	if DIA > 85 or DIA < 60:
+		DIA_Color = "\033[91m"
+	elif DIA > 80:
+		DIA_Color = "\033[93m"
+	elif DIA >= 60:
+		DIA_Color = "\033[92m"
+
+	return([SYS_Color, DIA_Color])
+
+def ChkHR(FloatHR):
+	if FloatHR > 60 and FloatHR < 100:
+		HR_Color = "\033[92m"
+	elif FloatHR >= 50 and FloatHR <= 110:
+		HR_Color = "\033[93m"
+	elif FloatHR < 50 or FloatHR > 110:
+		HR_Color = "\033[91m"
+
+	return(HR_Color)
 
 try:
 	FH = open(File, 'r')
@@ -51,6 +102,13 @@ SYS_Total = 0
 DIA_Total = 0
 PUL_Total = 0
 Count = len(Data)
+
+print(
+	f"Found %d %s in logfile." % (
+		Count, Plural(Count, 'entry', 'entries')
+	)
+)
+
 for Key, Value in Data.items():
 	SYS, DIA = Value[1].split('/')
 
@@ -62,4 +120,13 @@ SYS_Average = SYS_Total / Count
 DIA_Average = DIA_Total / Count
 PUL_Average = PUL_Total / Count
 
-print(f'AVG: %0.1f/%0.1f %0.1f' % (SYS_Average, DIA_Average, PUL_Average))
+SYS_Color, DIA_Color = ChkBP(f'{SYS_Average}/{DIA_Average}')
+
+print(
+	f"Avg. BP of {SYS_Color}%s\033[0m/{DIA_Color}%s\033[0m." %
+		(TidyNr(SYS_Average), TidyNr(DIA_Average))
+)
+
+print(
+	f'Avg. pulse of {ChkHR(PUL_Average)}%s\033[0m.' % TidyNr(PUL_Average)
+)
